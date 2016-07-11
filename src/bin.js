@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
-import yargs from 'yargs'
+const argv = require('yargs').argv
+const npu = require('./npu')
 
 
-const argv = yargs.argv
+const opts = {
+  dev: argv.d || argv.dev
+}
 
 
-console.log(argv);
+npu(opts)
