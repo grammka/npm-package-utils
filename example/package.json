@@ -18,7 +18,7 @@
   "license": "MIT",
   "main": "./lib",
   "scripts": {
-    "dev": "node ../src/bin.js -d"
+    "npu": "node ../src/bin.js -d -p 4000"
   },
   "peerDependencies": {
     "react": "^15.2.1"
