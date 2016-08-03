@@ -22,10 +22,9 @@ fs.writeFile(writeAppPath, `export default from '${ config.appPath }'`, (err) =>
 })
 
 
-const webpackCfg = require('./webpack-config')(config, opts)
-
-
 function NPU(opts) {
+  const webpackCfg = require('./webpack-config')(config, opts)
+
   if (opts.dev) {
     require('./bin/server')(webpackCfg)
   } else {

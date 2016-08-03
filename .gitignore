@@ -7,3 +7,4 @@ npm-debug.log
 npu.config.js
 
 src/dist
+src/src/App.js

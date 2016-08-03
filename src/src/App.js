@@ -1,0 +1,1 @@
+export default from '/Users/grammka/GithubProjects/npm-package-utils/example/App.js'
