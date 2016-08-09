@@ -9,7 +9,8 @@ function getWebpackConfig(config, opts) {
     loader: 'babel',
     include: /node_modules\/npu/,
     query: {
-      presets: [ 'es2015', 'stage-0', 'react' ]
+      presets: [ 'es2015', 'stage-0', 'react' ],
+      plugins: [ 'add-module-exports' ]
     }
   }, config.babelLoaderConfig)
 
@@ -51,8 +52,8 @@ function getWebpackConfig(config, opts) {
     },
 
     resolve: {
-      fallback: path.resolve(__dirname, '../node_modules')
-      //extensions: [ '', '.js', '.jsx' ]
+      fallback: path.resolve(__dirname, '../node_modules'),
+      extensions: [ '', '.js', '.jsx', '.css', '.styl' ]
     },
     resolveLoader: {
       root: path.resolve(__dirname, '../node_modules')
