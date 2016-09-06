@@ -6,10 +6,8 @@
 
 ##### Utils for simple work with npm projects.
 
-[![Dependencies Status](https://david-dm.org/grammka/npu.png)](https://david-dm.org/grammka/npu)
 [![Npm Version](https://badge.fury.io/js/npu.svg)](https://www.npmjs.com/package/npu)
 [![Month Downloads](https://img.shields.io/npm/dm/npu.svg)](http://npm-stat.com/charts.html?package=npu)
-[![Build Status](https://travis-ci.org/grammka/npu.png?branch=master)](https://travis-ci.org/grammka/npu)
 [![Npm Licence](https://img.shields.io/npm/l/npu.svg)](https://www.npmjs.com/package/npu)
 
 [![NPM](https://nodei.co/npm/npu.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/npu/)
