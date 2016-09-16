@@ -1,6 +1,6 @@
 {
   "name": "npu",
-  "version": "0.0.15",
+  "version": "1.0.0",
   "description": "NPM package utils for fast creating examples, static servers, deployment to surge, etc",
   "author": {
     "name": "Pavel Ivanov",
