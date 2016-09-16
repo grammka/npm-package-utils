@@ -8,3 +8,4 @@ npu.config.js
 
 src/dist
 src/src/App.js
+example/build

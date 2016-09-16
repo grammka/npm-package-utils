@@ -1,6 +1,7 @@
-var path      = require('path')
-var merge     = require('lodash.merge')
-var webpack   = require('webpack')
+var path                = require('path')
+var merge               = require('lodash.merge')
+var webpack             = require('webpack')
+var CopyWebpackPlugin   = require('copy-webpack-plugin')
 
 
 function getWebpackConfig(config, opts) {
@@ -40,15 +41,18 @@ function getWebpackConfig(config, opts) {
   var webpackConfig = {
     devtool: 'eval',
 
-    entry: [ path.join(__dirname, './src/index') ].concat(opts.dev ? [
-      'webpack-dev-server/client?http://localhost:3000',
-      'webpack/hot/only-dev-server'
-    ] : []),
+    entry: [ 
+      path.join(__dirname, './src/index') 
+    ]
+      .concat(opts.dev ? [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server'
+      ] : []),
 
     output: {
-      path: path.join(__dirname, 'dist'),
+      path: opts.dev ? path.join(__dirname, 'dist') : path.resolve(process.cwd(), opts.output),
       filename: 'bundle.js',
-      publicPath: '/static/'
+      publicPath: '/'
     },
 
     resolve: {
@@ -65,21 +69,28 @@ function getWebpackConfig(config, opts) {
 
     plugins: [
       new webpack.optimize.OccurenceOrderPlugin()
-    ].concat(process.env.NODE_ENV === 'production' ? [
-      new webpack.DefinePlugin({
-        'process.env': {
-          'NODE_ENV': JSON.stringify('production')
-        }
-      }),
-      new webpack.optimize.UglifyJsPlugin({
-        compressor: {
-          warnings: false
-        }
-      })
-    ] : [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
-    ])
+    ]
+      .concat(process.env.NODE_ENV === 'production' ? [
+        new webpack.DefinePlugin({
+          'process.env': {
+            'NODE_ENV': JSON.stringify('production')
+          }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+          compressor: {
+            warnings: false
+          }
+        })
+      ] : [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+      ])
+      .concat(!opts.dev ? [
+        new CopyWebpackPlugin([
+          { from: path.resolve(__dirname, './index.html'), to: path.resolve(process.cwd(), opts.output, './index.html') },
+        ])
+      ] : [])
+
   }
 
   return webpackConfig

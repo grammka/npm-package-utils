@@ -15,6 +15,7 @@ module.exports = function (webpackCfg) {
     const jsonStats = stats.toJson()
 
     debug('Compilation completed!')
+    
     console.log(stats.toString({
       colors: true,
       children: false,
