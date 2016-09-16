@@ -16,12 +16,18 @@
 ## Features
 - Create example for packages in two steps
 
+
 ## Installation
 ```
 npm install --save-dev npu
 ```
+or, for global usage
+```
+npm install -g npu
+```
 
 Install pear dependencies: `react`, `react-dom`
+
 
 ## Example
 
@@ -45,7 +51,7 @@ export default class App extends React.Component {
 }
 ```
 
-Thats it! Now you can make `npu -d` to run example in dev mode
+Thats it! Now you can make `npu -d` to run example in dev mode, or `npu -o ./build` for building.
 
 
 ## TODO
