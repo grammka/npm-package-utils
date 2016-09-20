@@ -1,5 +1,5 @@
 var path                = require('path')
-var merge               = require('lodash.merge')
+var merge               = require('deepmerge')
 var webpack             = require('webpack')
 var CopyWebpackPlugin   = require('copy-webpack-plugin')
 
