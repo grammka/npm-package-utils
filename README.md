@@ -10,8 +10,6 @@
 [![Month Downloads](https://img.shields.io/npm/dm/npu.svg)](http://npm-stat.com/charts.html?package=npu)
 [![Npm Licence](https://img.shields.io/npm/l/npu.svg)](https://www.npmjs.com/package/npu)
 
-[![NPM](https://nodei.co/npm/npu.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/npu/)
-
 
 ## Features
 - Create example for packages in two steps
