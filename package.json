@@ -1,6 +1,6 @@
 {
   "name": "npu",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "NPM package utils (NPU) for fast creating examples, static servers, deployment to surge, etc",
   "homepage": "https://github.com/pavelivanov/npu",
   "author": "Pavel Ivanov (grammka@gmail.com)",
