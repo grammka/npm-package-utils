@@ -20,5 +20,6 @@
   "scripts": {
     "npu": "node ../src/bin.js -d -p 4000",
     "npu:build": "node ../src/bin.js -o ./build"
-  }
+  },
+  "dependencies": {}
 }

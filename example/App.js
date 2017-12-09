@@ -2,11 +2,13 @@ import React from 'react'
 import Nested from './Nested'
 
 
-export default class Foo extends React.Component {
+export default class App extends React.Component {
+
   render() {
+
     return (
       <div>
-        <div>Component injected:</div>
+        <div>App Component</div>
         <Nested />
       </div>
     )
