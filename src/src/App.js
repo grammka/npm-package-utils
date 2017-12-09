@@ -1,1 +1,1 @@
-export default from '/Users/grammka/GitHubProjects/npu/example/App.js'
+export default from '/Users/grammka/GitHubProjects/WomboCompo/button/example/App.js'

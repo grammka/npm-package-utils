@@ -4,6 +4,7 @@ const deepmerge   = require('deepmerge')
 
 
 let config = {
+  title: 'NPU | Example',
   webpackConfig: {},
   babelLoaderConfig: {},
 }

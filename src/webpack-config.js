@@ -2,6 +2,7 @@ const path                = require('path')
 const deepmerge           = require('deepmerge')
 const webpack             = require('webpack')
 const CopyWebpackPlugin   = require('copy-webpack-plugin')
+const HtmlWebpackPlugin   = require('html-webpack-plugin')
 
 
 const getWebpackConfig = (config, opts) => {
@@ -11,6 +12,17 @@ const getWebpackConfig = (config, opts) => {
    DevTool ************************************************ */
 
   const devtool = opts.dev ? 'cheap-module-source-map' : null
+
+  /*
+
+   DevServer ************************************************ */
+
+  const devServer = {
+    publicPath: '/',
+    stats: 'errors-only',
+    noInfo: true,
+    lazy: false,
+  }
 
   /*
 
@@ -40,24 +52,22 @@ const getWebpackConfig = (config, opts) => {
 
   const babelLoaderConfig = deepmerge({
     test: /\.jsx?$/,
-    include: /\/npu/,
+    include: [ /\/npu/, new RegExp(config.appPath) ],
+    exclude: /node_modules/,
     use: {
-      loader: 'babel-loader',
+      loader: require.resolve('babel-loader'),
       options: {
-        presets: [ 'es2015', 'react', 'stage-0' ],
-        plugins: [ 'react-hot-loader/babel' ],
+        presets: [
+          require.resolve('babel-preset-es2015'),
+          require.resolve('babel-preset-react'),
+          require.resolve('babel-preset-stage-0'),
+        ],
+        plugins: [
+          // require.resolve('react-hot-loader/babel'),
+        ],
       },
     },
   }, config.babelLoaderConfig)
-
-  const babelLoaderInclude = babelLoaderConfig.include
-
-  if (babelLoaderInclude instanceof Array) {
-    babelLoaderConfig.include.push(new RegExp(config.appPath))
-  }
-  else {
-    babelLoaderConfig.include = [ babelLoaderConfig.include, new RegExp(config.appPath) ]
-  }
 
   const rules = [
     babelLoaderConfig,
@@ -65,10 +75,10 @@ const getWebpackConfig = (config, opts) => {
       test: /\.css$/,
       use: [
         {
-          loader: 'style-loader',
+          loader: require.resolve('style-loader'),
         },
         {
-          loader: 'css-loader',
+          loader: require.resolve('css-loader'),
           options: {
             modules: true,
             localIdentName: '[local]___[hash:base64:5]',
@@ -98,8 +108,14 @@ const getWebpackConfig = (config, opts) => {
 
   if (opts.dev) {
     plugins = [
-      // new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
+      new HtmlWebpackPlugin({
+        title: config.title,
+        template: path.join(__dirname, 'index.html'),
+        hash: false,
+        filename: 'index.html',
+        inject: 'body',
+      }),
     ]
   }
   else {
@@ -132,6 +148,7 @@ const getWebpackConfig = (config, opts) => {
 
   const webpackConfig = {
     devtool,
+    devServer,
     entry,
     output,
     resolve,

@@ -3,7 +3,7 @@ const chalk         = require('chalk')
 const _debug        = require('debug')
 
 
-module.exports = function (webpackCfg) {
+module.exports = (webpackCfg) => {
   const debug = _debug('app:bin:compile')
 
   debug(`Environment is set to: ${process.env.NODE_ENV || 'default'}`)
@@ -15,11 +15,11 @@ module.exports = function (webpackCfg) {
     const jsonStats = stats.toJson()
 
     debug('Compilation completed!')
-    
+
     console.log(stats.toString({
       colors: true,
       children: false,
-      chunks: false
+      chunks: false,
     }))
 
     if (err) {
@@ -35,5 +35,6 @@ module.exports = function (webpackCfg) {
     }
 
     debug('All done - everything is good to go.')
+    process.exit(0)
   })
 }
