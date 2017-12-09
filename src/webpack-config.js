@@ -52,8 +52,10 @@ const getWebpackConfig = (config, opts) => {
 
   const babelLoaderConfig = deepmerge({
     test: /\.jsx?$/,
-    include: [ /\/npu/, new RegExp(config.appPath) ],
-    exclude: /node_modules/,
+    include: [
+      path.join(__dirname, './'),
+      path.resolve(__dirname, config.appPath, '../'),
+    ],
     use: {
       loader: require.resolve('babel-loader'),
       options: {

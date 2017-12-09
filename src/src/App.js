@@ -1,1 +1,9 @@
-export default from '/Users/grammka/GitHubProjects/WomboCompo/button/example/App.js'
+import React from 'react'
+
+
+const App = () => (
+  <div />
+)
+
+
+export default App
