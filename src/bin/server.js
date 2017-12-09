@@ -17,6 +17,6 @@ module.exports = function (webpackCfg, opts) {
         return console.log(err);
       }
 
-      console.log(`Listening at http://localhost:${ port }/`);
+      console.log(`Listening at http://localhost:${port}/`);
     })
 }

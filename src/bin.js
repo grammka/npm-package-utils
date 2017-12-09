@@ -7,10 +7,10 @@ const npu = require('./npu')
 const opts = {
   dev: argv.d || argv.dev,
   output: argv.o || argv.output,
-  port: parseInt(argv.p || argv.port),
+  port: parseInt(argv.p || argv.port) || 3000,
 }
 
-if (opts.port && !/^\d+$/.test(opts.port)) {
+if (!/^\d+$/.test(opts.port)) {
   console.log('Error: Wrong port format passed as argument\n')
   process.exit(0)
 }

@@ -1,28 +1,37 @@
-var fs    = require('fs')
-var path  = require('path')
+const fs          = require('fs')
+const path        = require('path')
+const deepmerge   = require('deepmerge')
 
 
-var configPath = path.resolve(process.cwd(), 'npu.config.js')
+let config = {
+  webpackConfig: {},
+  babelLoaderConfig: {},
+}
 
-var config
 try {
-  config = require(configPath)
-} catch (err) {
+  const configPath = path.resolve(process.cwd(), 'npu.config.js')
+
+  config = deepmerge(config, require(configPath))
+  config.appPath = path.resolve(process.cwd(), config.app)
+} 
+catch (err) {
   console.error('Cannot find module npu.config.js. Be sure to add this file to root of your project')
   process.exit(0)
 }
-config.appPath = path.resolve(process.cwd(), config.app)
 
 
-var writeAppPath = path.join(__dirname, './src/App.js')
-fs.writeFile(writeAppPath, `export default from '${ config.appPath }'`, (err) => {
-  if (err) return console.log(err)
+const writeAppPath = path.join(__dirname, './src/App.js')
 
-  console.log(`File App.js created`);
+fs.writeFile(writeAppPath, `export default from '${config.appPath}'`, (err) => {
+  if (err) {
+    return console.log(err)
+  }
+
+  console.log(`File App.js created`)
 })
 
 
-function NPU (opts) {
+const NPU = (opts) => {
   const webpackCfg = require('./webpack-config')(config, opts)
   const script = opts.dev ? require('./bin/server') : require('./bin/compile')
 

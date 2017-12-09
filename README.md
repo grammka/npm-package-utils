@@ -1,10 +1,8 @@
 <p>
-  <img src="./images/logo960x420.png" height="100" />
+  <img src="./images/logo960x420.png" height="80" />
 </p>
 
-# Node Package Utils (npu)
-
-##### Utils for simple work with npm projects.
+### Create React apps fast with no Webpack
 
 [![Npm Version](https://badge.fury.io/js/npu.svg)](https://www.npmjs.com/package/npu)
 [![Month Downloads](https://img.shields.io/npm/dm/npu.svg)](http://npm-stat.com/charts.html?package=npu)
@@ -12,46 +10,60 @@
 
 
 ## Features
-- Create example for packages in two steps
+- Create React examples for your packages in two steps
 
 
 ## Installation
 ```
-npm install --save-dev npu
-```
-or, for global usage
-```
 npm install -g npu
 ```
 
-Install pear dependencies: `react`, `react-dom`
+Install peer dependencies in project root:
+```
+npm install react react-dom
+```
 
 
 ## Example
 
-####`/npu.config.js`
+`./lib/index.js`
+```
+const MyComponent = () => (
+  <div>My Component</div>
+)
+
+module.exports = MyComponent
+```
+
+`./npu.config.js`
 ```javascript
 module.exports = {
   app: './example/App.js'
 }
 ```
 
-####`/example/App.js`
+`./example/App.js`
 ```javascript
 import React from 'react'
+import MyComponent from '../lib'
 
 export default class App extends React.Component {
   render() {
     return (
-      <div>Example</div>
+      <div>
+        Example:
+        <MyComponent />
+      </div>
     )
   }
 }
 ```
 
-Thats it! Now you can make `npu -d` to run example in dev mode, or `npu -o ./build` for building.
+**That's it!** 
+
+Now you can make `npu -d` to run example in dev mode, or `npu -o ./build` to build app.
 
 
 ## TODO
 
-- [ ] Deployment on Surge
+- [ ] Deployment to surge.sh

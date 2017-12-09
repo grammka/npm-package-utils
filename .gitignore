@@ -1,11 +1,9 @@
+.DS_Store
 .idea
 
-lib
+*.log
+
 node_modules
 
-npm-debug.log
-npu.config.js
-
-src/dist
-src/src/App.js
+lib
 example/build

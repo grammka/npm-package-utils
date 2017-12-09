@@ -25,10 +25,12 @@ module.exports = function (webpackCfg) {
     if (err) {
       debug(chalk.red(err))
       process.exit(1)
-    } else if (jsonStats.errors.length > 0) {
+    }
+    else if (jsonStats.errors.length > 0) {
       debug(chalk.red(jsonStats.errors))
       process.exit(1)
-    } else if (jsonStats.warnings.length > 0) {
+    }
+    else if (jsonStats.warnings.length > 0) {
       // debug(chalk.yellow(jsonStats.warnings))
     }
 

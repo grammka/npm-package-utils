@@ -1,96 +1,144 @@
-var path                = require('path')
-var merge               = require('deepmerge')
-var webpack             = require('webpack')
-var CopyWebpackPlugin   = require('copy-webpack-plugin')
+const path                = require('path')
+const deepmerge           = require('deepmerge')
+const webpack             = require('webpack')
+const CopyWebpackPlugin   = require('copy-webpack-plugin')
 
 
-function getWebpackConfig(config, opts) {
-  var babelLoaderConfig = merge({
-    test: /\.js$/,
-    loader: 'babel',
-    include: /node_modules\/npu/,
-    query: {
-      presets: [ 'es2015', 'stage-0', 'react' ],
-      plugins: [ 'add-module-exports' ]
-    }
+const getWebpackConfig = (config, opts) => {
+
+  /*
+
+   DevTool ************************************************ */
+
+  const devtool = opts.dev ? 'cheap-module-source-map' : null
+
+  /*
+
+   Entry ************************************************ */
+
+  const entry = (opts.dev ? [
+    // `webpack-dev-server/client?http://localhost:${opts.port}`,
+    // 'react-hot-loader/patch',
+  ] : [])
+    .concat([
+      path.join(__dirname, './src/index'),
+    ])
+
+  /*
+
+   Output ************************************************ */
+
+  const output = {
+    path: opts.dev ? path.join(__dirname, 'dist') : path.resolve(process.cwd(), opts.output),
+    filename: 'bundle.js',
+    publicPath: '/',
+  }
+
+  /*
+
+   Rules ************************************************ */
+
+  const babelLoaderConfig = deepmerge({
+    test: /\.jsx?$/,
+    include: /\/npu/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: [ 'es2015', 'react', 'stage-0' ],
+        plugins: [ 'react-hot-loader/babel' ],
+      },
+    },
   }, config.babelLoaderConfig)
 
-  var babelLoaderInclude = babelLoaderConfig.include
+  const babelLoaderInclude = babelLoaderConfig.include
 
   if (babelLoaderInclude instanceof Array) {
     babelLoaderConfig.include.push(new RegExp(config.appPath))
-  } else {
+  }
+  else {
     babelLoaderConfig.include = [ babelLoaderConfig.include, new RegExp(config.appPath) ]
   }
 
-
-  var loaders = [
-    {
-      test: /\.js$/,
-      loader: 'react-hot',
-      exclude: /node_modules/
-    },
+  const rules = [
     babelLoaderConfig,
     {
       test: /\.css$/,
-      loader: 'style!css?modules&localIdentName=[local]___[hash:base64:5]'
-    }
-  ].concat(config.webpackConfig && config.webpackConfig.loaders || [])
+      use: [
+        {
+          loader: 'style-loader',
+        },
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            localIdentName: '[local]___[hash:base64:5]',
+          },
+        },
+      ],
+    },
+  ]
+    .concat(config.webpackConfig.rules || [])
 
-  
-  var webpackConfig = {
-    devtool: 'eval',
+  /*
 
-    entry: [ 
-      path.join(__dirname, './src/index') 
+   Resolve ************************************************ */
+
+  const resolve = {
+    modules: [
+      path.resolve(__dirname, '../node_modules'),
+    ],
+    extensions: [ '.js', '.jsx', '.css', '.styl', '.scss' ],
+  }
+
+  /*
+
+   Plugins ************************************************ */
+
+  let plugins
+
+  if (opts.dev) {
+    plugins = [
+      // new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin(),
     ]
-      .concat(opts.dev ? [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server'
-      ] : []),
+  }
+  else {
+    plugins = [
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production'),
+        },
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        comments: false,
+        compress: {
+          pure_getters: true,
+          unsafe: true,
+          unsafe_comps: true,
+          warnings: false,
+          screw_ie8: true,
+        },
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, './index.html'),
+          to: path.resolve(process.cwd(), opts.output, './index.html'),
+        },
+      ]),
+    ]
+  }
 
-    output: {
-      path: opts.dev ? path.join(__dirname, 'dist') : path.resolve(process.cwd(), opts.output),
-      filename: 'bundle.js',
-      publicPath: '/'
-    },
+  /* *************************************************** */
 
-    resolve: {
-      fallback: path.resolve(__dirname, '../node_modules'),
-      extensions: [ '', '.js', '.jsx', '.css', '.styl' ]
-    },
-    resolveLoader: {
-      root: path.resolve(__dirname, '../node_modules')
-    },
-
+  const webpackConfig = {
+    devtool,
+    entry,
+    output,
+    resolve,
     module: {
-      loaders: loaders
+      rules,
     },
-
-    plugins: [
-      new webpack.optimize.OccurenceOrderPlugin()
-    ]
-      .concat(process.env.NODE_ENV === 'production' ? [
-        new webpack.DefinePlugin({
-          'process.env': {
-            'NODE_ENV': JSON.stringify('production')
-          }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-          compressor: {
-            warnings: false
-          }
-        })
-      ] : [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
-      ])
-      .concat(!opts.dev ? [
-        new CopyWebpackPlugin([
-          { from: path.resolve(__dirname, './index.html'), to: path.resolve(process.cwd(), opts.output, './index.html') },
-        ])
-      ] : [])
-
+    plugins,
   }
 
   return webpackConfig
