@@ -1,5 +1,9 @@
 ## UNRELEASED
 
+## 1.2.2 (2017-12-09)
+
+  * fix babel include / exclude options
+
 ## 1.2.1 (2017-12-09)
 
   * replace webpack-dev-server with own express realisation
